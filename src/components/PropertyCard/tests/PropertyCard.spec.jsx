@@ -10,11 +10,13 @@ describe('PropertyCard', () => {
         branchName: '[branch/agent name]',
         propertyTitle: '2 Bed Hobbit Hole For Sale',
         mainImage: 'something.com/61AG4UpUoPL._SX300_QL70_.jpg',
+        propertyUrl: 'https://example.com/property',
     };
 
     it('should render property image', () => {
         render(<PropertyCard {...props} />);
         const image = screen.getByAltText('Property');
+        expect(image).toBeInTheDocument();
         expect(image.src).toContain('61AG4UpUoPL._SX300_QL70_.jpg');
     });
 
@@ -35,7 +37,6 @@ describe('PropertyCard', () => {
 
     it('should render property summary', () => {
         render(<PropertyCard {...props} />);
-
         expect(
             screen.getByText('Superbly insulated, energy efficient, secure and virtually invisible')
         ).toBeInTheDocument();
@@ -43,9 +44,25 @@ describe('PropertyCard', () => {
 
     it('should render agent contact link', () => {
         render(<PropertyCard {...props} />);
-
-        const link = screen.getByRole('link');
+        const link = screen.getByRole('link', { name: /Contact \[branch\/agent name\]/i });
         expect(link).toHaveAttribute('href', 'mailto:fakemail.fedtest@rightmove.co.uk');
-        expect(link).toHaveTextContent('Contact [branch/agent name]');
+    });
+
+    it('should render property link', () => {
+        render(<PropertyCard {...props} />);
+        const propertyLink = screen.getByRole('link', { name: /2 Bed Hobbit Hole For Sale/i });
+        expect(propertyLink).toHaveAttribute('href', 'https://example.com/property');
+    });
+
+    it('should not crash if props are missing', () => {
+        render(<PropertyCard />);
+        expect(screen.queryByText('£')).not.toBeInTheDocument();
+        expect(screen.queryByAltText('Property')).not.toBeInTheDocument();
+    });
+
+    it('should have accessible email link', () => {
+        render(<PropertyCard {...props} />);
+        const emailLink = screen.getByRole('link', { name: /Contact \[branch\/agent name\]/i });
+        expect(emailLink).toBeInTheDocument();
     });
 });

@@ -1,30 +1,38 @@
 import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Dropdown from '../Dropdown';
-import { render, screen } from '@testing-library/react';
-import { within } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
 
-describe('Dropdown', () => {
-    it('should render three options options and a label', () => {
-        render(<Dropdown options={[0, 100, 200]} label="test label" />);
-        const select = screen.getByRole('combobox');
-        const options = within(select).getAllByRole('option');
-        expect(options).toHaveLength(3);
+describe('Dropdown Component', () => {
+    const props = {
+        options: ['Option 1', 'Option 2', 'Option 3'],
+        onChange: jest.fn(),
+        label: 'Test Dropdown',
+        name: 'testDropdown',
+        ariaLabel: 'Select an option',
+        value: '',
+    };
 
-        const label = screen.getByText('test label');
-        expect(label).toBeInTheDocument();
+    beforeEach(() => {
+        render(<Dropdown {...props} />);
     });
 
-    it('should correctly update the value', async () => {
-        const onChange = () => {};
-        render(<Dropdown options={[0, 100, 200]} label="test label" onChange={onChange} />);
+    it('renders the dropdown with the correct label and options', () => {
+        const dropdown = screen.getByRole('combobox', { name: props.ariaLabel });
+        expect(dropdown).toBeInTheDocument();
 
-        const select = screen.getByRole('combobox');
+        const label = screen.getByText(props.label);
+        expect(label).toBeInTheDocument();
 
-        await userEvent.selectOptions(select, ['200']);
+        props.options.forEach((option) => {
+            const optionElement = screen.getByText(option);
+            expect(optionElement).toBeInTheDocument();
+        });
+    });
 
-        expect(screen.getByRole('option', { name: '0' }).selected).toBe(false);
-        expect(screen.getByRole('option', { name: '100' }).selected).toBe(false);
-        expect(screen.getByRole('option', { name: '200' }).selected).toBe(true);
+    it('calls the onChange function when an option is selected', () => {
+        const dropdown = screen.getByRole('combobox', { name: props.ariaLabel });
+        fireEvent.change(dropdown, { target: { value: props.options[1] } });
+        expect(props.onChange).toHaveBeenCalledTimes(1);
     });
 });

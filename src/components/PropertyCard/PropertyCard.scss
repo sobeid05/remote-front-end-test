@@ -5,34 +5,45 @@
     border-radius: 4px;
     margin: 1rem;
     box-shadow: 0 3px 3px -3px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 
     .ImageAndPrice {
         background: #f4f4f5;
+        position: relative; /* Allows positioning of the price */
 
         .image {
             width: 300px;
             height: 200px;
+
             img {
                 width: 100%;
                 height: auto;
+                object-fit: cover; /* Ensures the image scales properly */
             }
         }
 
         .price {
             font-size: 1.5rem;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
+            color: #333;
+            bottom: 0.5rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 4px;
         }
     }
 
     .PropertyDetails {
+        padding: 1rem;
         h1 {
             color: #006653;
+            margin-bottom: 0.5rem;
         }
 
         h1,
         p {
             margin: 0;
-            padding: 1rem 1rem 0 1rem;
+            padding: 0;
         }
 
         a {
@@ -40,32 +51,77 @@
         }
 
         .propertyTitle {
-            font-size: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
         }
 
         .summary {
-            height: 92px;
             max-height: 92px;
-            margin-bottom: 1.5rem;
             overflow: hidden;
+            color: #666;
+            padding-bottom: 100px;
         }
 
         .agentInfo {
-            padding: 21px 1rem;
-            position: relative;
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
 
             span {
-                position: absolute;
-                font-size: 2.5rem;
-                top: 6px;
-                left: 1rem;
-                text-shadow: 0 0 0 #262637;
+                font-size: 2rem;
+                margin-right: 8px;
             }
 
             a {
                 color: #006653;
-                margin-left: 3.5rem;
+                margin-left: 0.5rem;
                 text-decoration: none;
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        margin: 1rem 0;
+        box-shadow: none;
+
+        .ImageAndPrice {
+            .image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .price {
+                position: static;
+                padding: 1rem 0;
+                text-align: center;
+                background: none;
+                padding-top: 100px;
+            }
+        }
+
+        .PropertyDetails {
+            padding: 1rem;
+
+            h1,
+            p {
+                padding: 0.5rem 0;
+            }
+
+            .agentInfo {
+                padding: 1rem 0;
+
+                span {
+                    font-size: 1.8rem;
+                    margin-right: 8px;
+                }
+
+                a {
+                    margin-left: 0;
+                    display: block;
+                    text-align: center;
+                    margin-top: 8px;
+                }
             }
         }
     }

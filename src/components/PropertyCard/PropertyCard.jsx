@@ -2,38 +2,36 @@ import React from 'react';
 import './PropertyCard.scss';
 import PropTypes from 'prop-types';
 
-const ImageAndPrice = ({ price, mainImage }) => {
-    return (
-        <div className="ImageAndPrice">
+const ImageAndPrice = ({ price, mainImage }) => (
+    <div className="ImageAndPrice">
+        {mainImage && (
             <div className="image">
                 <img src={mainImage} alt="Property" />
             </div>
-            <div className="price">£ {price}</div>
-        </div>
-    );
-};
+        )}
+        {price && <div className="price">£ {price}</div>}
+    </div>
+);
 
-const PropertyDetails = ({ propertyTitle, displayAddress, branchName, url, summary }) => {
-    return (
-        <div className="PropertyDetails">
-            <a href={url}>
-                <h1 className="propertyTitle">{propertyTitle}</h1>
-                <p className="displayAddress">{displayAddress}</p>
-                <p className="summary">{summary}</p>
+const PropertyDetails = ({ propertyTitle, displayAddress, branchName, url, summary }) => (
+    <div className="PropertyDetails">
+        <a href={url}>
+            <h1 className="propertyTitle">{propertyTitle}</h1>
+            <p className="displayAddress">{displayAddress}</p>
+            <p className="summary">{summary}</p>
+        </a>
+        <div className="agentInfo">
+            <a href={'mailto:fakemail.fedtest@rightmove.co.uk'}>
+                <span role="img" aria-hidden="true">
+                    ✉️
+                </span>
+                <span>Contact {branchName}</span>
             </a>
-            <div className="agentInfo">
-                <a href={'mailto:fakemail.fedtest@rightmove.co.uk'}>
-                    <span role="img" aria-label="Email icon">
-                        ✉️
-                    </span>
-                    Contact {branchName}
-                </a>
-            </div>
         </div>
-    );
-};
+    </div>
+);
 
-const PropertyCard = ({ price, mainImage, propertyTitle, displayAddress, branchName, propertyUrl, summary }) => {
+const PropertyCard = ({ role, price, mainImage, propertyTitle, displayAddress, branchName, propertyUrl, summary }) => {
     return (
         <div className="PropertyCard">
             <ImageAndPrice price={price} mainImage={mainImage} />
